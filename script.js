@@ -803,127 +803,134 @@ function parsePythonMethods(code,name,e){
 
 function parseJSChain(code,name,e){
 
-
-
-    const regex=
-    new RegExp(
-    name+"\\.(setTitle|setDescription|setColor|setURL|setFooter|setThumbnail|setImage|setAuthor|addFields?)\\((.*?)\\)",
-    "gs"
+    const regex = new RegExp(
+        "\\b" + name + "\\.(setTitle|setDescription|setColor|setURL|setFooter|setThumbnail|setImage|setAuthor|addFields?|setFields)\\(([^)]*)\\)",
+        "g"
     );
 
 
     let match;
 
 
+    while((match = regex.exec(code))){
 
-    while((match=regex.exec(code))){
-
-
-        const method=match[1];
-
-        const args=splitArguments(match[2]);
+        const method = match[1];
+        const raw = match[2];
+        const args = splitArguments(raw);
 
 
+        if(method === "setTitle"){
 
-        switch(method){
-
-
-            case "setTitle":
-
-                e.title=
-                getString(args[0])||args[0];
-
-            break;
-
-
-
-            case "setDescription":
-
-                e.description=
-                getString(args[0])||args[0];
-
-            break;
-
-
-
-            case "setColor":
-
-                e.color=
-                parseColor(args[0]);
-
-            break;
-
-
-
-            case "setURL":
-
-                e.url=
-                getString(args[0])||args[0];
-
-            break;
-
-
-
-            case "setFooter":
-
-                e.footer=
-                getString(args[0])||"(dynamic)";
-
-            break;
-
-
-
-            case "setThumbnail":
-
-                e.thumbnail=
-                getString(args[0]);
-
-            break;
-
-
-
-            case "setImage":
-
-                e.image=
-                getString(args[0]);
-
-            break;
-
-
-
-            case "addField":
-
-            case "addFields":
-
-
-                e.fields.push({
-
-                    name:
-                    getString(args[0])
-                    ||
-                    "(dynamic)",
-
-
-                    value:
-                    getString(args[1])
-                    ||
-                    "(dynamic)",
-
-
-                    inline:
-                    /true/i.test(match[2])
-
-                });
-
-
-            break;
-
+            e.title =
+            getString(args[0]) || args[0];
 
         }
 
 
-    }
+        else if(method === "setDescription"){
 
+            e.description =
+            getString(args[0]) || args[0];
+
+        }
+
+
+        else if(method === "setColor"){
+
+            e.color =
+            parseColor(args[0]) || "#5865f2";
+
+        }
+
+
+        else if(method === "setURL"){
+
+            e.url =
+            getString(args[0]) || args[0];
+
+        }
+
+
+        else if(method === "setFooter"){
+
+            let obj = raw.match(/text\s*:\s*["'`](.*?)["'`]/);
+
+            e.footer =
+            obj ? obj[1] : getString(raw);
+
+        }
+
+
+        else if(method === "setThumbnail"){
+
+            e.thumbnail =
+            getString(args[0]);
+
+        }
+
+
+        else if(method === "setImage"){
+
+            e.image =
+            getString(args[0]);
+
+        }
+
+
+        else if(method === "setAuthor"){
+
+            let obj =
+            raw.match(/name\s*:\s*["'`](.*?)["'`]/);
+
+            e.author =
+            obj ? obj[1] : getString(raw);
+
+        }
+
+
+        else if(
+            method === "addField" ||
+            method === "addFields"
+        ){
+
+            let fields = raw;
+
+
+            let names =
+            [...fields.matchAll(
+                /name\s*:\s*["'`](.*?)["'`]/g
+            )];
+
+
+            let values =
+            [...fields.matchAll(
+                /value\s*:\s*["'`](.*?)["'`]/g
+            )];
+
+
+            for(let i=0;i<names.length;i++){
+
+                e.fields.push({
+
+                    name:names[i][1],
+
+                    value:
+                    values[i]
+                    ?
+                    values[i][1]
+                    :
+                    "(dynamic)",
+
+                    inline:
+                    /inline\s*:\s*true/i.test(raw)
+
+                });
+
+            }
+
+        }
+
+    }
 
 }
 

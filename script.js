@@ -1082,148 +1082,131 @@ function parseMessages(code,embeds){
 
 function renderEmbed(e,index){
 
-
-    let color=
-    e.color || "#5865f2";
+let color=e.color || "#5865f2";
 
 
+return `
 
-    let fields=
-    e.fields.length
-    ?
-    `<div class="fields">
-
-    ${e.fields.map(f=>`
-
-        <div class="field">
-
-            <div class="field-name">
-            ${escapeHTML(f.name)}
-            </div>
-
-            <div class="field-value">
-            ${escapeHTML(f.value)}
-            </div>
-
-        </div>
-
-    `).join("")}
-
-    </div>`
-    :
-    "";
+<div class="discord-message">
 
 
+<div class="discord-embed">
 
 
-    let image=
-    e.image
-    ?
-    `<img class="embed-image" src="${escapeHTML(e.image)}">`
-    :
-    "";
-
-
-
-    let thumb=
-    e.thumbnail
-    ?
-    `<img class="embed-thumb" src="${escapeHTML(e.thumbnail)}">`
-    :
-    "";
-
-
-
-    return `
-
-<div class="embed-card">
-
-
-<div class="embed-color"
+<div class="embed-bar"
 style="background:${color}">
 </div>
 
 
-
-<div class="embed-content">
-
-
-${thumb}
+<div class="embed-main">
 
 
-${e.author ?
-`
-<div class="embed-author">
+${e.author ? `
+<div class="discord-author">
 ${escapeHTML(e.author)}
 </div>
-`
-:
-""}
+`:""}
 
 
 
-${e.title ?
-`
-<div class="embed-title ${e.url?"":"normal"}">
+${e.thumbnail ? `
+<img class="discord-thumb"
+src="${escapeHTML(e.thumbnail)}">
+`:""}
+
+
+
+${e.title ? `
+
+<div class="discord-title ${e.url?"link":""}">
 ${escapeHTML(e.title)}
 </div>
-`
-:
-""}
+
+`:""}
 
 
 
-${e.description ?
-`
-<div class="embed-description">
+
+${e.description ? `
+
+<div class="discord-description">
 ${escapeHTML(e.description)}
 </div>
-`
-:
-""}
+
+`:""}
 
 
 
-${fields}
+
+${e.fields.length ? `
+
+<div class="discord-fields">
+
+${e.fields.map(field=>`
+
+<div class="discord-field">
+
+<div class="field-title">
+${escapeHTML(field.name)}
+</div>
+
+
+<div class="field-text">
+${escapeHTML(field.value)}
+</div>
+
+</div>
+
+`).join("")}
+
+</div>
+
+`:""}
 
 
 
-${image}
+
+${e.image ? `
+
+<img class="discord-image"
+src="${escapeHTML(e.image)}">
+
+`:""}
 
 
 
-${e.footer ?
-`
-<div class="footer">
+
+${e.footer ? `
+
+<div class="discord-footer">
+
 ${escapeHTML(e.footer)}
-</div>
-`
-:
-""}
-
 
 </div>
+
+`:""}
 
 
 </div>
 
-<div class="embed-info">
+</div>
 
-Embed #${index+1}
+
+
+<div class="embed-meta">
+
+Embed ${index+1}
 |
 Line ${e.line}
-|
-${e.sent?"Sent":"Not detected sent"}
+
+</div>
+
 
 </div>
 
 `;
 
 }
-
-
-
-
 
 function renderMessage(m){
 

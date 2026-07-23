@@ -1263,26 +1263,24 @@ No embeds found
 
 
 
-$("pane-plain").innerHTML=
+$("pane-plain").innerHTML =
 data.plain.length
 ?
 data.plain.map(renderMessage).join("")
 :
 `<div class="empty">
-No normal messages
+No plain text
 </div>`;
 
 
-
-$("pane-eph").innerHTML=
+$("pane-eph").innerHTML =
 data.ephemeral.length
 ?
 data.ephemeral.map(renderMessage).join("")
 :
 `<div class="empty">
-No ephemeral messages
+No ephemeral text
 </div>`;
-
 
 
 $("nEmbeds").textContent=

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dissect — Discord Embed Scanner</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="hero">
+
+<div class="badge">
+// DISCORD SCRIPT ANALYZER
+</div>
+
+<h1>
+Dissect
+<span>Embed Intelligence</span>
+</h1>
+
+<p>
+Scan discord.py and discord.js bot files. Detect embeds, colors, fields, images, buttons, messages, and ephemeral replies without executing your code.
+</p>
+
+</header>
+
+
+<section class="scanner-card" id="scannerCard">
+
+
+<div class="toolbar">
+
+<div class="window-controls">
+<span></span>
+<span></span>
+<span></span>
+</div>
+
+
+<div class="toolbar-item">
+Language
+</div>
+
+
+<select id="langSelect">
+
+<option value="auto">
+Auto Detect
+</option>
+
+<option value="python">
+Python discord.py
+</option>
+
+<option value="js">
+JavaScript discord.js
+</option>
+
+</select>
+
+
+<div class="scan-status" id="scanStatus">
+Ready
+</div>
+
+
+</div>
+
+
+
+<textarea 
+id="codeInput"
+placeholder="Paste your Discord bot script here...
+
+Example:
+
+embed = discord.Embed(
+    title='Welcome',
+    description='Hello world',
+    color=discord.Color.blue()
+)
+
+embed.add_field(
+    name='Rules',
+    value='Be nice'
+)
+
+await ctx.send(embed=embed)
+">
+</textarea>
+
+
+
+<div class="actions">
+
+<button id="scanBtn">
+Scan Script
+</button>
+
+
+<button id="clearBtn" class="secondary">
+Clear
+</button>
+
+
+<div class="counter" id="charCount">
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<section class="results" id="results">
+
+
+<div class="tabs">
+
+
+<button class="tab active" data-pane="embeds">
+Embeds
+<span id="nEmbeds">0</span>
+</button>
+
+
+<button class="tab" data-pane="plain">
+Messages
+<span id="nPlain">0</span>
+</button>
+
+
+<button class="tab" data-pane="eph">
+Ephemeral
+<span id="nEph">0</span>
+</button>
+
+
+</div>
+
+
+
+
+<div class="pane active" id="pane-embeds">
+
+</div>
+
+
+<div class="pane" id="pane-plain">
+
+</div>
+
+
+<div class="pane" id="pane-eph">
+
+</div>
+
+
+
+</section>
+
+
+
+
+<footer>
+
+Static parser. Your code stays inside your browser.
+
+</footer>
+
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
